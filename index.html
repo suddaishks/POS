@@ -33,13 +33,11 @@
             overflow-x: hidden;
         }
 
-        /* Lock body scroll only when mobile full-screen cart is open */
         body.cart-drawer-open {
             overflow: hidden;
             height: 100dvh;
         }
 
-        /* Header */
         .app-header {
             background: #ffffff;
             border-bottom: 2px solid var(--gold-main);
@@ -49,7 +47,6 @@
             box-shadow: 0 4px 16px rgba(197, 160, 89, 0.08);
         }
 
-        /* Responsive Brand Logo */
         .brand-logo-img {
             width: 48px;
             height: 48px;
@@ -61,15 +58,14 @@
 
         /* Invoice Logo Styling */
         .invoice-logo-img {
-            max-width: 70px;
-            max-height: 70px;
+            max-width: 60px;
+            max-height: 60px;
             width: auto;
             height: auto;
             object-fit: contain;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
         }
 
-        /* Equal Category Cards */
         .cat-card {
             background: var(--bg-card);
             border: 2px solid var(--border-light);
@@ -113,7 +109,6 @@
             border-color: var(--gold-main);
         }
 
-        /* Product Catalog Card */
         .catalog-card {
             background: #ffffff;
             border: 1.5px solid var(--border-light);
@@ -139,7 +134,6 @@
             white-space: nowrap;
         }
 
-        /* ML Size Buttons */
         .ml-btn {
             border: 1.5px solid var(--border-light);
             background: #ffffff;
@@ -164,7 +158,6 @@
             box-shadow: 0 3px 8px rgba(197, 160, 89, 0.35);
         }
 
-        /* Quantity Controls */
         .qty-box {
             display: inline-flex;
             align-items: center;
@@ -185,10 +178,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        .qty-btn:active {
-            background: var(--gold-soft);
         }
 
         .qty-val {
@@ -213,7 +202,6 @@
             color: #ffffff;
         }
 
-        /* Mobile Sticky Cart Bar */
         .mobile-sticky-cart {
             position: fixed;
             bottom: 0;
@@ -278,7 +266,14 @@
             margin-bottom: 10px;
         }
 
-        /* Print Layout */
+        /* ==========================================================================
+           STRICT A5 SINGLE PAGE AUTO-FIT PRINT CSS
+           ========================================================================== */
+        @page {
+            size: A5 portrait;
+            margin: 4mm;
+        }
+
         @media print {
             body * {
                 visibility: hidden !important;
@@ -291,11 +286,13 @@
                 left: 0 !important;
                 top: 0 !important;
                 width: 100% !important;
+                max-height: 202mm !important; /* Exact A5 height minus margins */
                 margin: 0 !important;
-                padding: 12px !important;
+                padding: 4mm !important;
                 background: #ffffff !important;
                 color: #000000 !important;
                 box-shadow: none !important;
+                overflow: hidden !important;
             }
             .no-print {
                 display: none !important;
@@ -309,11 +306,10 @@
 </head>
 <body>
 
-    <!-- TOP HEADER WITH ORIGINAL logo.jpg -->
+    <!-- TOP HEADER -->
     <header class="app-header py-2.5 px-3 px-md-4 no-print">
         <div class="container-xl d-flex justify-content-between align-items-center gap-2">
             <div class="d-flex align-items-center gap-2.5" style="cursor: pointer;" onclick="goHome()">
-                <!-- Original Logo File -->
                 <img src="file_00000000258482089677d23077d5562f.png" alt="Suddais Collection Logo" class="brand-logo-img shadow-sm">
                 <div>
                     <h1 class="h6 fw-extrabold mb-0 text-dark" style="letter-spacing: 0.6px;">SUDDAIS COLLECTION</h1>
@@ -332,10 +328,10 @@
     <main class="container-xl py-3 py-lg-4 mobile-bottom-spacer no-print">
         <div class="row g-4 align-items-start">
 
-            <!-- LEFT / MAIN AREA: HOMEPAGE CATEGORIES & PRODUCT CATALOG -->
+            <!-- LEFT / MAIN AREA -->
             <div class="col-lg-7">
 
-                <!-- VIEW 1: HOMEPAGE CATEGORY DASHBOARD -->
+                <!-- HOMEPAGE CATEGORY DASHBOARD -->
                 <div id="homeCategoryView">
                     <div class="mb-3">
                         <h2 class="h5 fw-bold text-dark mb-1">Select Product Category</h2>
@@ -363,7 +359,7 @@
                         </div>
                     </div>
 
-                    <!-- Quick Global Search on Homepage -->
+                    <!-- Quick Global Search -->
                     <div class="mt-4 bg-white p-3 rounded-4 border shadow-sm">
                         <label class="form-label fw-bold small text-dark mb-2"><i class="bi bi-search text-warning me-1"></i> Quick Search All Fragrances</label>
                         <div class="input-group">
@@ -372,9 +368,8 @@
                     </div>
                 </div>
 
-                <!-- VIEW 2: PRODUCT CATALOG VIEW -->
+                <!-- PRODUCT CATALOG VIEW -->
                 <div id="catalogView" style="display: none;">
-                    <!-- Top Navigation & Category Switcher -->
                     <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3 bg-white p-2.5 rounded-3 border shadow-sm">
                         <button onclick="goHome()" class="btn btn-outline-dark btn-sm rounded-3 fw-semibold px-3 py-1.5">
                             <i class="bi bi-arrow-left me-1"></i> Back
@@ -388,26 +383,21 @@
                         <span id="catalogCountBadge" class="badge bg-light text-dark border px-2.5 py-1.5" style="font-size: 0.75rem;">0 Items</span>
                     </div>
 
-                    <!-- Catalog Search Bar -->
                     <div class="input-group mb-3 shadow-sm rounded-3 overflow-hidden border bg-white">
                         <span class="input-group-text bg-white border-0 text-muted ps-3"><i class="bi bi-search"></i></span>
                         <input type="text" id="catalogSearchInput" oninput="renderCatalog()" class="form-control border-0 shadow-none py-2.5" placeholder="Search in category (English or Urdu name)..." style="font-size: 0.9rem;">
                         <button class="btn btn-white border-0 text-muted pe-3" type="button" onclick="clearCatalogSearch()"><i class="bi bi-x-lg"></i></button>
                     </div>
 
-                    <!-- Natural Full-Width Product List -->
-                    <div id="catalogListContainer" class="d-flex flex-column gap-3">
-                        <!-- Rendered dynamically -->
-                    </div>
+                    <div id="catalogListContainer" class="d-flex flex-column gap-3"></div>
                 </div>
 
             </div>
 
-            <!-- RIGHT / DRAWER AREA: CURRENT ORDER, BILLING & COURIER -->
+            <!-- RIGHT / DRAWER AREA -->
             <div class="col-lg-5">
                 <div id="orderPanelWrapper" class="order-panel-wrapper">
                     
-                    <!-- Mobile Drawer Header -->
                     <div class="mobile-drawer-header bg-white border-bottom px-3 py-3 d-flex justify-content-between align-items-center shadow-sm">
                         <div class="d-flex align-items-center gap-2">
                             <i class="bi bi-bag-check-fill fs-5" style="color: var(--gold-main);"></i>
@@ -418,7 +408,6 @@
                         </button>
                     </div>
 
-                    <!-- Scrollable Cart & Checkout Body -->
                     <div class="order-drawer-scroll">
                         <div class="card border-0 shadow-sm rounded-4 bg-white p-3 p-md-4">
                             
@@ -431,7 +420,6 @@
                                 </button>
                             </div>
 
-                            <!-- Cart Items Container -->
                             <div id="orderItemsList" class="desktop-cart-items-scroll mb-3">
                                 <div class="text-center text-muted py-4 border rounded-3 bg-light">
                                     <i class="bi bi-bag fs-3 d-block mb-1 text-secondary"></i>
@@ -439,7 +427,6 @@
                                 </div>
                             </div>
 
-                            <!-- Totals Summary -->
                             <div class="p-3 rounded-3 mb-3 border" style="background: var(--gold-soft); border-color: var(--border-light) !important;">
                                 <div class="d-flex justify-content-between small mb-2">
                                     <span class="text-muted fw-semibold">Subtotal</span>
@@ -456,7 +443,6 @@
                                 </div>
                             </div>
 
-                            <!-- Customer & Leopard Courier Details -->
                             <div class="bg-light p-3 rounded-3 mb-3 border">
                                 <div class="d-flex justify-content-between align-items-center mb-2.5">
                                     <span class="fw-bold text-dark small"><i class="bi bi-truck text-warning me-1"></i> Courier: <strong>LEOPARD COURIER</strong></span>
@@ -481,7 +467,6 @@
                                 </div>
                             </div>
 
-                            <!-- Generate Invoice CTA -->
                             <button onclick="openInvoiceModal()" class="btn btn-gold-primary w-100 py-3 shadow-sm d-flex align-items-center justify-content-center gap-2">
                                 <i class="bi bi-file-earmark-check fs-5"></i>
                                 <span>GENERATE & PREVIEW INVOICE</span>
@@ -512,52 +497,54 @@
         </div>
     </div>
 
-    <!-- PROFESSIONAL INVOICE PREVIEW & PRINT MODAL WITH logo.jpg -->
+    <!-- ==========================================================================
+       DYNAMIC AUTO-FIT A5 PRINT INVOICE MODAL
+       ========================================================================== -->
     <div class="modal fade" id="invoiceModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content border-0 shadow-lg rounded-4">
                 
-                <div class="modal-body p-3 p-sm-5 bg-white text-dark rounded-4" id="printableInvoice">
+                <div class="modal-body bg-white text-dark rounded-4" id="printableInvoice" style="padding: 16px;">
                     
-                    <!-- Invoice Brand Header with Original logo.jpg -->
-                    <div class="text-center border-bottom pb-3 mb-3">
+                    <!-- Invoice Brand Header -->
+                    <div class="text-center border-bottom pb-2 mb-2" id="invHeaderSection">
                         <img src="logo.jpg" alt="Suddais Collection Logo" class="invoice-logo-img shadow-sm">
-                        <h2 class="h4 fw-extrabold mb-1 text-dark" style="letter-spacing: 1px;">SUDDAIS COLLECTION</h2>
-                        <p class="small text-muted mb-1 fst-italic">مہک ایسی جو دل کو چھو جائے، احساس ایسا جو ہمیشہ یاد رہ جائے۔</p>
-                        <div class="small text-muted" style="font-size: 0.76rem;">Malir, Karachi, Pakistan • WhatsApp: 03182187575</div>
+                        <h2 class="h5 fw-extrabold mb-0 text-dark" style="letter-spacing: 0.8px;">SUDDAIS COLLECTION</h2>
+                        <p class="small text-muted mb-1 fst-italic" style="font-size: 0.7rem;">مہک ایسی جو دل کو چھو جائے، احساس ایسا جو ہمیشہ یاد رہ جائے۔</p>
+                        <div class="small text-muted" style="font-size: 0.7rem;">Malir, Karachi, Pakistan • WhatsApp: 03182187575</div>
                     </div>
 
                     <!-- Order & Customer Details -->
-                    <div class="p-3 rounded-3 mb-3 border" style="background: #faf8f5; font-size: 0.8rem;">
-                        <div class="row g-2">
+                    <div class="p-2 rounded-3 mb-2 border" id="invMetaSection" style="background: #faf8f5; font-size: 0.75rem;">
+                        <div class="row g-1">
                             <div class="col-6">
-                                <div class="mb-1"><strong>Invoice No:</strong> <span id="invNumber" class="fw-bold">SC-2026-0001</span></div>
-                                <div class="mb-1"><strong>Date & Time:</strong> <span id="invDateTime"></span></div>
-                                <div><strong>Courier:</strong> <span class="badge bg-dark text-warning">LEOPARD COURIER</span></div>
+                                <div class="mb-0.5"><strong>Invoice No:</strong> <span id="invNumber" class="fw-bold">SC-2026-0001</span></div>
+                                <div class="mb-0.5"><strong>Date & Time:</strong> <span id="invDateTime"></span></div>
+                                <div><strong>Courier:</strong> <span class="badge bg-dark text-warning" style="font-size: 0.6rem;">LEOPARD COURIER</span></div>
                             </div>
                             <div class="col-6 text-end">
-                                <div class="mb-1"><strong>Customer:</strong> <span id="invCustName"></span></div>
-                                <div class="mb-1"><strong>Phone:</strong> <span id="invCustPhone"></span></div>
+                                <div class="mb-0.5"><strong>Customer:</strong> <span id="invCustName"></span></div>
+                                <div class="mb-0.5"><strong>Phone:</strong> <span id="invCustPhone"></span></div>
                                 <div><strong>City / Area:</strong> <span id="invCustCityArea"></span></div>
                             </div>
-                            <div class="col-12 pt-2 mt-1 border-top">
+                            <div class="col-12 pt-1 mt-0.5 border-top">
                                 <strong>Delivery Address:</strong> <span id="invCustAddress"></span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Invoice Items Table -->
-                    <div class="table-responsive mb-3">
-                        <table class="table table-bordered table-sm align-middle mb-0" style="font-size: 0.8rem;">
+                    <!-- Invoice Items Table (Dynamically Auto-Fitted) -->
+                    <div class="table-responsive mb-2" id="invTableWrapper">
+                        <table class="table table-bordered table-sm align-middle mb-0" id="invTableElement" style="font-size: 0.75rem;">
                             <thead style="background: #fbf7ee;">
                                 <tr>
-                                    <th>#</th>
-                                    <th>Product</th>
-                                    <th>Category</th>
-                                    <th>ML</th>
-                                    <th class="text-center">Qty</th>
-                                    <th class="text-end">Price</th>
-                                    <th class="text-end">Total</th>
+                                    <th style="width: 5%;">#</th>
+                                    <th style="width: 38%;">Product</th>
+                                    <th style="width: 15%;">Category</th>
+                                    <th style="width: 10%;">ML</th>
+                                    <th style="width: 8%;" class="text-center">Qty</th>
+                                    <th style="width: 12%;" class="text-end">Price</th>
+                                    <th style="width: 12%;" class="text-end">Total</th>
                                 </tr>
                             </thead>
                             <tbody id="invItemsBody"></tbody>
@@ -565,35 +552,35 @@
                     </div>
 
                     <!-- Invoice Totals -->
-                    <div class="row justify-content-end mb-3">
-                        <div class="col-sm-6">
-                            <table class="table table-sm table-borderless mb-0" style="font-size: 0.82rem;">
+                    <div class="row justify-content-end mb-2" id="invTotalsSection">
+                        <div class="col-sm-6 col-7">
+                            <table class="table table-sm table-borderless mb-0" style="font-size: 0.75rem;">
                                 <tr>
-                                    <td class="text-muted">Subtotal:</td>
-                                    <td class="text-end fw-semibold" id="invSubtotal">Rs. 0</td>
+                                    <td class="text-muted py-0.5">Subtotal:</td>
+                                    <td class="text-end fw-semibold py-0.5" id="invSubtotal">Rs. 0</td>
                                 </tr>
                                 <tr>
-                                    <td class="text-muted">Delivery Charges (Leopard):</td>
-                                    <td class="text-end fw-semibold" id="invDelivery">Rs. 0</td>
+                                    <td class="text-muted py-0.5">Delivery (Leopard):</td>
+                                    <td class="text-end fw-semibold py-0.5" id="invDelivery">Rs. 0</td>
                                 </tr>
                                 <tr class="border-top">
-                                    <td class="fw-bold fs-6 pt-2">GRAND TOTAL:</td>
-                                    <td class="text-end fw-extrabold fs-6 pt-2" style="color: #a8843e;" id="invGrandTotal">Rs. 0</td>
+                                    <td class="fw-bold pt-1">GRAND TOTAL:</td>
+                                    <td class="text-end fw-extrabold pt-1" style="color: #a8843e;" id="invGrandTotal">Rs. 0</td>
                                 </tr>
                             </table>
                         </div>
                     </div>
 
                     <!-- Thank You Note -->
-                    <div class="text-center p-2.5 rounded-3 my-3 border-top border-bottom" style="background: #fbf7ee;">
-                        <div class="fw-bold text-dark" style="font-size: 0.82rem; letter-spacing: 0.5px;">THANK YOU FOR CHOOSING SUDDAIS COLLECTION!</div>
-                        <div class="text-muted" style="font-size: 0.74rem;">Your trust means a lot to us. We look forward to serving you again.</div>
+                    <div class="text-center p-1.5 rounded-3 my-1.5 border-top border-bottom" id="invThankYouSection" style="background: #fbf7ee;">
+                        <div class="fw-bold text-dark" style="font-size: 0.75rem; letter-spacing: 0.5px;">THANK YOU FOR CHOOSING SUDDAIS COLLECTION!</div>
+                        <div class="text-muted" style="font-size: 0.65rem;">Your trust means a lot to us. We look forward to serving you again.</div>
                     </div>
 
                     <!-- Services Information -->
-                    <div class="p-2.5 rounded-3 border mb-3 text-center" style="background: #ffffff;">
-                        <div class="fw-bold mb-1.5" style="font-size: 0.75rem; color: #a8843e; letter-spacing: 0.5px;">ALSO AVAILABLE</div>
-                        <div class="d-flex flex-wrap justify-content-center gap-1.5" style="font-size: 0.7rem;">
+                    <div class="p-1.5 rounded-3 border mb-1.5 text-center" id="invServicesSection" style="background: #ffffff;">
+                        <div class="fw-bold mb-1" style="font-size: 0.7rem; color: #a8843e; letter-spacing: 0.5px;">ALSO AVAILABLE</div>
+                        <div class="d-flex flex-wrap justify-content-center gap-1" style="font-size: 0.65rem;">
                             <span class="badge bg-light text-dark border">Premium Perfumes</span>
                             <span class="badge bg-light text-dark border">Luxury Attars</span>
                             <span class="badge bg-light text-dark border">Signature Fragrances</span>
@@ -603,18 +590,18 @@
                     </div>
 
                     <!-- Footer Branding -->
-                    <div class="text-center pt-2 border-top" style="font-size: 0.74rem;">
-                        <div class="fw-bold text-dark mb-1">SUDDAIS COLLECTION &nbsp;|&nbsp; WhatsApp: 03182187575 &nbsp;|&nbsp; Courier: Leopard Courier</div>
+                    <div class="text-center pt-1 border-top" id="invFooterSection" style="font-size: 0.68rem;">
+                        <div class="fw-bold text-dark mb-0.5">SUDDAIS COLLECTION &nbsp;|&nbsp; WhatsApp: 03182187575 &nbsp;|&nbsp; Courier: Leopard Courier</div>
                         <div class="fst-italic" style="color: #a8843e;">"مہک ایسی جو دل کو چھو جائے، احساس ایسا جو ہمیشہ یاد رہ جائے۔"</div>
                     </div>
 
                 </div>
 
                 <!-- Modal Footer Buttons -->
-                <div class="modal-footer bg-light rounded-bottom-4 no-print">
+                <div class="modal-footer bg-light rounded-bottom-4 no-print py-2">
                     <button type="button" class="btn btn-secondary btn-sm px-4 rounded-pill" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-gold-primary btn-sm px-4 rounded-pill" onclick="window.print()">
-                        <i class="bi bi-printer me-1"></i> Print / Save PDF
+                    <button type="button" class="btn btn-gold-primary btn-sm px-4 rounded-pill shadow-sm" onclick="triggerAutoFitPrint()">
+                        <i class="bi bi-printer me-1"></i> Print / Save A5 PDF
                     </button>
                 </div>
 
@@ -717,7 +704,6 @@
             ]
         };
 
-        // Application State
         let activeCategory = 'Perfumes';
         let activeProductId = null;
         let cardSelections = {}; 
@@ -732,7 +718,6 @@
             updateTotals();
         });
 
-        // Navigation Functions
         function goHome() {
             document.getElementById('catalogView').style.display = 'none';
             document.getElementById('homeCategoryView').style.display = 'block';
@@ -1037,6 +1022,9 @@
             return { subtotal, delivery, grandTotal };
         }
 
+        /* ==========================================================================
+           DYNAMIC AUTO-FIT A5 PRINT ENGINE
+           ========================================================================== */
         function openInvoiceModal() {
             if (orderCart.length === 0) {
                 alert("Please add at least one product to your order first.");
@@ -1064,7 +1052,7 @@
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td>${idx + 1}</td>
-                    <td class="fw-bold">${item.name}</td>
+                    <td class="fw-bold text-truncate" style="max-width: 140px;">${item.name}</td>
                     <td>${item.category}</td>
                     <td>${item.size}</td>
                     <td class="text-center">${item.qty}</td>
@@ -1079,8 +1067,63 @@
             document.getElementById('invDelivery').innerText = `Rs. ${totals.delivery.toLocaleString()}`;
             document.getElementById('invGrandTotal').innerText = `Rs. ${totals.grandTotal.toLocaleString()}`;
 
+            // AUTO-FIT COMPACT EXECUTION BASED ON ITEM COUNT
+            applyAutoFitLayout(orderCart.length);
+
             const modal = new bootstrap.Modal(document.getElementById('invoiceModal'));
             modal.show();
+        }
+
+        function applyAutoFitLayout(itemCount) {
+            const tableEl = document.getElementById('invTableElement');
+            const headerSec = document.getElementById('invHeaderSection');
+            const metaSec = document.getElementById('invMetaSection');
+            const totalsSec = document.getElementById('invTotalsSection');
+            const thankSec = document.getElementById('invThankYouSection');
+            const servSec = document.getElementById('invServicesSection');
+            const footerSec = document.getElementById('invFooterSection');
+
+            if (itemCount > 10) {
+                // Ultra compact for 10-20+ items
+                tableEl.style.fontSize = '0.62rem';
+                tableEl.querySelectorAll('th, td').forEach(el => el.style.padding = '2px 4px');
+                headerSec.style.marginBottom = '4px';
+                headerSec.style.paddingBottom = '4px';
+                metaSec.style.marginBottom = '4px';
+                metaSec.style.padding = '6px';
+                totalsSec.style.marginBottom = '4px';
+                thankSec.style.display = 'none'; // Hide non-essential thank you note to guarantee single page fit
+                servSec.style.display = 'none'; // Hide services list for massive orders
+                footerSec.style.paddingTop = '4px';
+            } else if (itemCount > 6) {
+                // Compact for 6-10 items
+                tableEl.style.fontSize = '0.68rem';
+                tableEl.querySelectorAll('th, td').forEach(el => el.style.padding = '3px 6px');
+                headerSec.style.marginBottom = '6px';
+                headerSec.style.paddingBottom = '6px';
+                metaSec.style.marginBottom = '6px';
+                metaSec.style.padding = '8px';
+                totalsSec.style.marginBottom = '6px';
+                thankSec.style.display = 'block';
+                servSec.style.display = 'none'; // Hide services badge to save space
+                footerSec.style.paddingTop = '6px';
+            } else {
+                // Standard luxurious spacing for 1-5 items
+                tableEl.style.fontSize = '0.75rem';
+                tableEl.querySelectorAll('th, td').forEach(el => el.style.padding = '5px 8px');
+                headerSec.style.marginBottom = '10px';
+                headerSec.style.paddingBottom = '8px';
+                metaSec.style.marginBottom = '10px';
+                metaSec.style.padding = '10px';
+                totalsSec.style.marginBottom = '10px';
+                thankSec.style.display = 'block';
+                servSec.style.display = 'block';
+                footerSec.style.paddingTop = '8px';
+            }
+        }
+
+        function triggerAutoFitPrint() {
+            window.print();
         }
     </script>
 </body>
