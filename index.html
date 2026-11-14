@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>SUDDAIS COLLECTION — Premium POS & Billing System</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-page: #faf8f5;
+            --bg-card: #ffffff;
+            --text-dark: #18181b;
+            --text-muted: #64748b;
+            --gold-main: #c5a059;
+            --gold-dark: #a8843e;
+            --gold-soft: #fbf7ee;
+            --border-light: #e6dfd3;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            min-height: 100dvh;
+            background-color: var(--bg-page);
+            color: var(--text-dark);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-overflow-scrolling: touch;
+            overflow-x: hidden;
+        }
+
+        /* Lock body scroll only when mobile full-screen cart is open */
+        body.cart-drawer-open {
+            overflow: hidden;
+            height: 100dvh;
+        }
+
+        /* Header */
+        .app-header {
+            background: #ffffff;
+            border-bottom: 2px solid var(--gold-main);
+            position: sticky;
+            top: 0;
+            z-index: 1020;
+            box-shadow: 0 4px 16px rgba(197, 160, 89, 0.08);
+        }
+
+        .logo-box {
+            width: 48px;
+            height: 48px;
+            border: 2px dashed var(--gold-main);
+            border-radius: 12px;
+            background: var(--gold-soft);
+            color: var(--gold-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            flex-shrink: 0;
+        }
+
+        /* Equal Category Cards */
+        .cat-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border-light);
+            border-radius: 16px;
+            padding: 24px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+
+        .cat-card:hover, .cat-card.active {
+            border-color: var(--gold-main);
+            background: var(--gold-soft);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(197, 160, 89, 0.16);
+        }
+
+        .cat-icon-wrap {
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
+            background: var(--gold-soft);
+            border: 1px solid var(--border-light);
+            color: var(--gold-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            margin-bottom: 12px;
+        }
+
+        .cat-card.active .cat-icon-wrap {
+            background: var(--gold-main);
+            color: #ffffff;
+            border-color: var(--gold-main);
+        }
+
+        /* Product Catalog Card */
+        .catalog-card {
+            background: #ffffff;
+            border: 1.5px solid var(--border-light);
+            border-radius: 14px;
+            padding: 16px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .catalog-card.selected-card {
+            border-color: var(--gold-main);
+            box-shadow: 0 6px 18px rgba(197, 160, 89, 0.14);
+        }
+
+        .price-tag {
+            background: var(--gold-soft);
+            color: var(--gold-dark);
+            border: 1px solid var(--border-light);
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 5px 12px;
+            border-radius: 8px;
+            white-space: nowrap;
+        }
+
+        /* ML Size Buttons */
+        .ml-btn {
+            border: 1.5px solid var(--border-light);
+            background: #ffffff;
+            color: var(--text-dark);
+            font-weight: 700;
+            font-size: 0.8rem;
+            padding: 7px 12px;
+            border-radius: 8px;
+            transition: all 0.15s ease;
+            min-width: 56px;
+        }
+
+        .ml-btn:hover {
+            border-color: var(--gold-main);
+            background: var(--gold-soft);
+        }
+
+        .ml-btn.active {
+            background: var(--gold-main);
+            color: #ffffff;
+            border-color: var(--gold-main);
+            box-shadow: 0 3px 8px rgba(197, 160, 89, 0.35);
+        }
+
+        /* Quantity Controls */
+        .qty-box {
+            display: inline-flex;
+            align-items: center;
+            border: 1.5px solid var(--border-light);
+            border-radius: 10px;
+            overflow: hidden;
+            background: #ffffff;
+        }
+
+        .qty-btn {
+            border: none;
+            background: #f8f6f2;
+            color: var(--text-dark);
+            width: 34px;
+            height: 36px;
+            font-weight: 700;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qty-btn:active {
+            background: var(--gold-soft);
+        }
+
+        .qty-val {
+            min-width: 34px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .btn-gold-primary {
+            background: var(--gold-main);
+            color: #ffffff;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            padding: 9px 16px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-gold-primary:hover, .btn-gold-primary:active {
+            background: var(--gold-dark);
+            color: #ffffff;
+        }
+
+        /* Mobile Sticky Cart Bar */
+        .mobile-sticky-cart {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1030;
+            background: #18181b;
+            color: #ffffff;
+            border-top: 2px solid var(--gold-main);
+            padding: 12px 16px;
+            box-shadow: 0 -6px 24px rgba(0,0,0,0.2);
+            cursor: pointer;
+        }
+
+        /* Spacing at bottom on mobile so last product isn't hidden under sticky bar */
+        @media (max-width: 991.98px) {
+            .mobile-bottom-spacer {
+                padding-bottom: 90px;
+            }
+            /* Full-screen Cart Drawer on Mobile */
+            .order-panel-wrapper {
+                position: fixed;
+                inset: 0;
+                z-index: 1050;
+                background: var(--bg-page);
+                display: none;
+                flex-direction: column;
+                height: 100dvh;
+            }
+            .order-panel-wrapper.open {
+                display: flex;
+            }
+            .order-drawer-scroll {
+                flex: 1 1 auto;
+                min-height: 0;
+                overflow-y: auto;
+                overscroll-behavior: contain;
+                -webkit-overflow-scrolling: touch;
+                padding: 16px;
+            }
+        }
+
+        /* Desktop Two-Column Layout */
+        @media (min-width: 992px) {
+            .mobile-sticky-cart, .mobile-drawer-header {
+                display: none !important;
+            }
+            .order-panel-wrapper {
+                display: block !important;
+                position: sticky;
+                top: 84px;
+            }
+            .desktop-cart-items-scroll {
+                max-height: 290px;
+                overflow-y: auto;
+                overscroll-behavior: contain;
+            }
+        }
+
+        /* Order Item Card */
+        .order-item-card {
+            background: #ffffff;
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        /* Print Layout */
+        @media print {
+            body * {
+                visibility: hidden !important;
+            }
+            #printableInvoice, #printableInvoice * {
+                visibility: visible !important;
+            }
+            #printableInvoice {
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 12px !important;
+                background: #ffffff !important;
+                color: #000000 !important;
+                box-shadow: none !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP HEADER -->
+    <header class="app-header py-2.5 px-3 px-md-4 no-print">
+        <div class="container-xl d-flex justify-content-between align-items-center gap-2">
+            <div class="d-flex align-items-center gap-2.5" style="cursor: pointer;" onclick="goHome()">
+                <!-- Original Logo Placeholder -->
+                <div class="logo-box" title="Suddais Collection Logo Placeholder">
+                    <i class="bi bi-gem"></i>
+                </div>
+                <div>
+                    <h1 class="h6 fw-extrabold mb-0 text-dark" style="letter-spacing: 0.6px;">SUDDAIS COLLECTION</h1>
+                    <p class="mb-0 text-muted fst-italic" style="font-size: 0.72rem;">مہک ایسی جو دل کو چھو جائے، احساس ایسا جو ہمیشہ یاد رہ جائے۔</p>
+                </div>
+            </div>
+            <div>
+                <span class="badge bg-white text-dark border px-3 py-2 rounded-pill shadow-sm" style="font-size: 0.75rem;">
+                    <i class="bi bi-calendar3 text-warning me-1"></i> <span id="headerDate"></span>
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN APPLICATION CONTAINER -->
+    <main class="container-xl py-3 py-lg-4 mobile-bottom-spacer no-print">
+        <div class="row g-4 align-items-start">
+
+            <!-- LEFT / MAIN AREA: HOMEPAGE CATEGORIES & PRODUCT CATALOG -->
+            <div class="col-lg-7">
+
+                <!-- VIEW 1: HOMEPAGE CATEGORY DASHBOARD -->
+                <div id="homeCategoryView">
+                    <div class="mb-3">
+                        <h2 class="h5 fw-bold text-dark mb-1">Select Product Category</h2>
+                        <p class="small text-muted mb-0">Choose Perfumes or Attar to browse catalog and create orders</p>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <div class="cat-card" id="homeCardPerfumes" onclick="openCategory('Perfumes')">
+                                <div class="cat-icon-wrap">
+                                    <i class="bi bi-spray"></i>
+                                </div>
+                                <h3 class="h6 fw-bold mb-1 text-dark">PERFUMES</h3>
+                                <span class="badge rounded-pill px-3 py-1" style="background: var(--gold-soft); color: var(--gold-dark); border: 1px solid var(--border-light); font-size: 0.75rem;" id="homePerfumeCount">20 Products</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="cat-card" id="homeCardAttar" onclick="openCategory('Attar')">
+                                <div class="cat-icon-wrap">
+                                    <i class="bi bi-droplet-half"></i>
+                                </div>
+                                <h3 class="h6 fw-bold mb-1 text-dark">ATTAR</h3>
+                                <span class="badge rounded-pill px-3 py-1" style="background: var(--gold-soft); color: var(--gold-dark); border: 1px solid var(--border-light); font-size: 0.75rem;" id="homeAttarCount">61 Products</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Global Search on Homepage -->
+                    <div class="mt-4 bg-white p-3 rounded-4 border shadow-sm">
+                        <label class="form-label fw-bold small text-dark mb-2"><i class="bi bi-search text-warning me-1"></i> Quick Search All Fragrances</label>
+                        <div class="input-group">
+                            <input type="text" id="homeQuickSearch" oninput="handleHomeSearch()" class="form-control form-control-lg border-secondary-subtle" placeholder="Search English or Urdu name (e.g. Talib, راشا)..." style="font-size: 0.9rem;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 2: PRODUCT CATALOG VIEW -->
+                <div id="catalogView" style="display: none;">
+                    <!-- Top Navigation & Category Switcher -->
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3 bg-white p-2.5 rounded-3 border shadow-sm">
+                        <button onclick="goHome()" class="btn btn-outline-dark btn-sm rounded-3 fw-semibold px-3 py-1.5">
+                            <i class="bi bi-arrow-left me-1"></i> Back
+                        </button>
+
+                        <div class="btn-group btn-group-sm" role="group">
+                            <button type="button" id="switchBtnPerfumes" onclick="openCategory('Perfumes')" class="btn btn-outline-warning text-dark fw-bold px-3">Perfumes</button>
+                            <button type="button" id="switchBtnAttar" onclick="openCategory('Attar')" class="btn btn-outline-warning text-dark fw-bold px-3">Attar</button>
+                        </div>
+
+                        <span id="catalogCountBadge" class="badge bg-light text-dark border px-2.5 py-1.5" style="font-size: 0.75rem;">0 Items</span>
+                    </div>
+
+                    <!-- Catalog Search Bar -->
+                    <div class="input-group mb-3 shadow-sm rounded-3 overflow-hidden border bg-white">
+                        <span class="input-group-text bg-white border-0 text-muted ps-3"><i class="bi bi-search"></i></span>
+                        <input type="text" id="catalogSearchInput" oninput="renderCatalog()" class="form-control border-0 shadow-none py-2.5" placeholder="Search in category (English or Urdu name)..." style="font-size: 0.9rem;">
+                        <button class="btn btn-white border-0 text-muted pe-3" type="button" onclick="clearCatalogSearch()"><i class="bi bi-x-lg"></i></button>
+                    </div>
+
+                    <!-- Natural Full-Width Product List (No Nested Scroll Trap on Mobile) -->
+                    <div id="catalogListContainer" class="d-flex flex-column gap-3">
+                        <!-- Rendered dynamically -->
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT / DRAWER AREA: CURRENT ORDER, BILLING & COURIER -->
+            <div class="col-lg-5">
+                <div id="orderPanelWrapper" class="order-panel-wrapper">
+                    
+                    <!-- Mobile Drawer Header -->
+                    <div class="mobile-drawer-header bg-white border-bottom px-3 py-3 d-flex justify-content-between align-items-center shadow-sm">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-bag-check-fill fs-5" style="color: var(--gold-main);"></i>
+                            <h5 class="fw-bold mb-0 fs-6">MY ORDER & BILLING</h5>
+                        </div>
+                        <button onclick="closeMobileCart()" class="btn btn-dark btn-sm rounded-pill px-3 fw-semibold">
+                            <i class="bi bi-arrow-left me-1"></i> Back to Products
+                        </button>
+                    </div>
+
+                    <!-- Scrollable Cart & Checkout Body -->
+                    <div class="order-drawer-scroll">
+                        <div class="card border-0 shadow-sm rounded-4 bg-white p-3 p-md-4">
+                            
+                            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                                <h5 class="fw-bold mb-0 text-dark fs-6">
+                                    <i class="bi bi-receipt-cutoff text-warning me-1"></i> Current Order (<span id="orderTotalItemsTop">0</span>)
+                                </h5>
+                                <button onclick="clearOrder()" class="btn btn-outline-danger btn-sm rounded-pill px-3 py-0.5" style="font-size: 0.75rem;">
+                                    <i class="bi bi-trash3 me-1"></i> Clear All
+                                </button>
+                            </div>
+
+                            <!-- Cart Items Container (Scrolls smoothly for 50+ items) -->
+                            <div id="orderItemsList" class="desktop-cart-items-scroll mb-3">
+                                <div class="text-center text-muted py-4 border rounded-3 bg-light">
+                                    <i class="bi bi-bag fs-3 d-block mb-1 text-secondary"></i>
+                                    <span class="small">Your order is empty. Select a product & ML size to add.</span>
+                                </div>
+                            </div>
+
+                            <!-- Totals Summary -->
+                            <div class="p-3 rounded-3 mb-3 border" style="background: var(--gold-soft); border-color: var(--border-light) !important;">
+                                <div class="d-flex justify-content-between small mb-2">
+                                    <span class="text-muted fw-semibold">Subtotal</span>
+                                    <span id="billSubtotal" class="fw-bold text-dark">Rs. 0</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center small mb-2">
+                                    <span class="text-muted fw-semibold">Delivery Charges (Leopard)</span>
+                                    <input type="number" id="deliveryInput" value="200" min="0" oninput="updateTotals()" class="form-control form-control-sm text-end fw-bold" style="width: 95px;">
+                                </div>
+                                <hr class="my-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="fw-bold text-dark">GRAND TOTAL</span>
+                                    <span id="billGrandTotal" class="fw-extrabold fs-5" style="color: var(--gold-dark);">Rs. 0</span>
+                                </div>
+                            </div>
+
+                            <!-- Customer & Leopard Courier Details -->
+                            <div class="bg-light p-3 rounded-3 mb-3 border">
+                                <div class="d-flex justify-content-between align-items-center mb-2.5">
+                                    <span class="fw-bold text-dark small"><i class="bi bi-truck text-warning me-1"></i> Courier: <strong>LEOPARD COURIER</strong></span>
+                                    <span class="badge bg-dark text-warning" style="font-size: 0.68rem;">COD</span>
+                                </div>
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <input type="text" id="custName" class="form-control form-control-sm" placeholder="Customer Name *">
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="tel" id="custPhone" class="form-control form-control-sm" placeholder="Phone Number *">
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" id="custCity" class="form-control form-control-sm" value="Karachi" placeholder="City">
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" id="custArea" class="form-control form-control-sm" placeholder="Area / Location">
+                                    </div>
+                                    <div class="col-12">
+                                        <textarea id="custAddress" rows="2" class="form-control form-control-sm" placeholder="Complete Delivery Address"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Generate Invoice CTA -->
+                            <button onclick="openInvoiceModal()" class="btn btn-gold-primary w-100 py-3 shadow-sm d-flex align-items-center justify-content-center gap-2">
+                                <i class="bi bi-file-earmark-check fs-5"></i>
+                                <span>GENERATE & PREVIEW INVOICE</span>
+                            </button>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- MOBILE STICKY CART BAR -->
+    <div id="mobileStickyCart" class="mobile-sticky-cart no-print" onclick="openMobileCart()">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-2">
+                <span class="badge rounded-pill text-dark fw-extrabold px-2.5 py-1.5" style="background: var(--gold-main);" id="stickyCountBadge">0</span>
+                <div>
+                    <div class="fw-bold" style="font-size: 0.85rem; letter-spacing: 0.4px;">MY ORDER — <span id="stickyItemsText">0 ITEMS</span></div>
+                    <div class="text-warning fw-bold" style="font-size: 0.82rem;" id="stickyTotalText">Rs. 0</div>
+                </div>
+            </div>
+            <div class="btn btn-sm fw-bold px-3 py-2 rounded-pill text-dark" style="background: var(--gold-main);">
+                View Order <i class="bi bi-chevron-up ms-1"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- PROFESSIONAL INVOICE PREVIEW & PRINT MODAL -->
+    <div class="modal fade" id="invoiceModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                
+                <div class="modal-body p-3 p-sm-5 bg-white text-dark rounded-4" id="printableInvoice">
+                    
+                    <!-- Invoice Brand Header -->
+                    <div class="text-center border-bottom pb-3 mb-3">
+                        <div class="d-inline-flex align-items-center justify-content-center mb-2 rounded-3" style="border: 2px dashed #c5a059; background: #fbf7ee; color: #c5a059; width: 54px; height: 54px;">
+                            <i class="bi bi-gem fs-4"></i>
+                        </div>
+                        <h2 class="h4 fw-extrabold mb-1 text-dark" style="letter-spacing: 1px;">SUDDAIS COLLECTION</h2>
+                        <p class="small text-muted mb-1 fst-italic">مہک ایسی جو دل کو چھو جائے، احساس ایسا جو ہمیشہ یاد رہ جائے۔</p>
+                        <div class="small text-muted" style="font-size: 0.76rem;">Malir, Karachi, Pakistan • WhatsApp: 03182187575</div>
+                    </div>
+
+                    <!-- Order & Customer Details -->
+                    <div class="p-3 rounded-3 mb-3 border" style="background: #faf8f5; font-size: 0.8rem;">
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <div class="mb-1"><strong>Invoice No:</strong> <span id="invNumber" class="fw-bold">SC-2026-0001</span></div>
+                                <div class="mb-1"><strong>Date & Time:</strong> <span id="invDateTime"></span></div>
+                                <div><strong>Courier:</strong> <span class="badge bg-dark text-warning">LEOPARD COURIER</span></div>
+                            </div>
+                            <div class="col-6 text-end">
+                                <div class="mb-1"><strong>Customer:</strong> <span id="invCustName"></span></div>
+                                <div class="mb-1"><strong>Phone:</strong> <span id="invCustPhone"></span></div>
+                                <div><strong>City / Area:</strong> <span id="invCustCityArea"></span></div>
+                            </div>
+                            <div class="col-12 pt-2 mt-1 border-top">
+                                <strong>Delivery Address:</strong> <span id="invCustAddress"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Invoice Items Table -->
+                    <div class="table-responsive mb-3">
+                        <table class="table table-bordered table-sm align-middle mb-0" style="font-size: 0.8rem;">
+                            <thead style="background: #fbf7ee;">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Product</th>
+                                    <th>Category</th>
+                                    <th>ML</th>
+                                    <th class="text-center">Qty</th>
+                                    <th class="text-end">Price</th>
+                                    <th class="text-end">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="invItemsBody"></tbody>
+                        </table>
+                    </div>
+
+                    <!-- Invoice Totals -->
+                    <div class="row justify-content-end mb-3">
+                        <div class="col-sm-6">
+                            <table class="table table-sm table-borderless mb-0" style="font-size: 0.82rem;">
+                                <tr>
+                                    <td class="text-muted">Subtotal:</td>
+                                    <td class="text-end fw-semibold" id="invSubtotal">Rs. 0</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Delivery Charges (Leopard):</td>
+                                    <td class="text-end fw-semibold" id="invDelivery">Rs. 0</td>
+                                </tr>
+                                <tr class="border-top">
+                                    <td class="fw-bold fs-6 pt-2">GRAND TOTAL:</td>
+                                    <td class="text-end fw-extrabold fs-6 pt-2" style="color: #a8843e;" id="invGrandTotal">Rs. 0</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Thank You Note -->
+                    <div class="text-center p-2.5 rounded-3 my-3 border-top border-bottom" style="background: #fbf7ee;">
+                        <div class="fw-bold text-dark" style="font-size: 0.82rem; letter-spacing: 0.5px;">THANK YOU FOR CHOOSING SUDDAIS COLLECTION!</div>
+                        <div class="text-muted" style="font-size: 0.74rem;">Your trust means a lot to us. We look forward to serving you again.</div>
+                    </div>
+
+                    <!-- Services Information -->
+                    <div class="p-2.5 rounded-3 border mb-3 text-center" style="background: #ffffff;">
+                        <div class="fw-bold mb-1.5" style="font-size: 0.75rem; color: #a8843e; letter-spacing: 0.5px;">ALSO AVAILABLE</div>
+                        <div class="d-flex flex-wrap justify-content-center gap-1.5" style="font-size: 0.7rem;">
+                            <span class="badge bg-light text-dark border">Premium Perfumes</span>
+                            <span class="badge bg-light text-dark border">Luxury Attars</span>
+                            <span class="badge bg-light text-dark border">Signature Fragrances</span>
+                            <span class="badge bg-light text-dark border">Perfume Testers</span>
+                            <span class="badge bg-light text-dark border">Customized Fragrances</span>
+                        </div>
+                    </div>
+
+                    <!-- Footer Branding -->
+                    <div class="text-center pt-2 border-top" style="font-size: 0.74rem;">
+                        <div class="fw-bold text-dark mb-1">SUDDAIS COLLECTION &nbsp;|&nbsp; WhatsApp: 03182187575 &nbsp;|&nbsp; Courier: Leopard Courier</div>
+                        <div class="fst-italic" style="color: #a8843e;">"مہک ایسی جو دل کو چھو جائے، احساس ایسا جو ہمیشہ یاد رہ جائے۔"</div>
+                    </div>
+
+                </div>
+
+                <!-- Modal Footer Buttons -->
+                <div class="modal-footer bg-light rounded-bottom-4 no-print">
+                    <button type="button" class="btn btn-secondary btn-sm px-4 rounded-pill" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-gold-primary btn-sm px-4 rounded-pill" onclick="window.print()">
+                        <i class="bi bi-printer me-1"></i> Print / Save PDF
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        /* ==========================================================================
+           COMPLETE PRODUCT DATA (ALL PERFUMES & ATTARS WITH EXACT SIZES & PRICES)
+           ========================================================================== */
+        const PRODUCTS_DATA = {
+            Perfumes: [
+                { id: "p1", name: "Office For Men", aliases: "office for men آفس فار مین", sizes: { "50ML": 2500, "30ML": 1600, "15ML": 900, "10ML": 650, "5ML": 350 } },
+                { id: "p2", name: "Talib", aliases: "talib طالب", sizes: { "50ML": 3000, "30ML": 1900, "15ML": 1050, "10ML": 750, "5ML": 400 } },
+                { id: "p3", name: "Khamrah Qahwa", aliases: "khamrah qahwa خمرہ قہوہ", sizes: { "50ML": 2500, "30ML": 1600, "15ML": 900, "10ML": 650, "5ML": 350 } },
+                { id: "p4", name: "Khamrah Lattafa", aliases: "khamrah lattafa خمرہ لطافہ", sizes: { "50ML": 2200, "30ML": 1400, "15ML": 800, "10ML": 580, "5ML": 300 } },
+                { id: "p5", name: "Creed Aventus", aliases: "creed aventus کرید ایوینٹس", sizes: { "50ML": 3000, "30ML": 1900, "15ML": 1050, "10ML": 750, "5ML": 400 } },
+                { id: "p6", name: "Fogg Paradise", aliases: "fogg paradise فوگ پیراڈائز", sizes: { "50ML": 2000, "30ML": 1300, "15ML": 750, "10ML": 550, "5ML": 280 } },
+                { id: "p7", name: "Gucci Flora", aliases: "gucci flora گچی فلورا", sizes: { "50ML": 2000, "30ML": 1300, "15ML": 750, "10ML": 550, "5ML": 280 } },
+                { id: "p8", name: "Gucci Bloom", aliases: "gucci bloom گچی بلوم", sizes: { "50ML": 2000, "30ML": 1300, "15ML": 750, "10ML": 550, "5ML": 280 } },
+                { id: "p9", name: "White Oud", aliases: "white oud وائٹ عود", sizes: { "50ML": 3000, "30ML": 1900, "15ML": 1050, "10ML": 750, "5ML": 400 } },
+                { id: "p10", name: "Romantic Coffee", aliases: "romantic coffee رومانٹک کافی", sizes: { "50ML": 3000, "30ML": 1900, "15ML": 1050, "10ML": 750, "5ML": 400 } },
+                { id: "p11", name: "Imperial Valley", aliases: "imperial valley امپیریل ویلی", sizes: { "50ML": 3000, "30ML": 1900, "15ML": 1050, "10ML": 750, "5ML": 400 } },
+                { id: "p12", name: "Imagination", aliases: "imagination امیجینیشن", sizes: { "50ML": 3000, "30ML": 1900, "15ML": 1050, "10ML": 750, "5ML": 400 } },
+                { id: "p13", name: "Dirham", aliases: "dirham درہم", sizes: { "50ML": 2500, "30ML": 1600, "15ML": 900, "10ML": 650, "5ML": 350 } },
+                { id: "p14", name: "Janaan Sport", aliases: "janaan sport جنان اسپورٹس", sizes: { "50ML": 2500, "30ML": 1600, "15ML": 900, "10ML": 650, "5ML": 350 } },
+                { id: "p15", name: "Janaan J.", aliases: "janaan j جنان", sizes: { "50ML": 2000, "30ML": 1300, "15ML": 750, "10ML": 550, "5ML": 280 } },
+                { id: "p16", name: "Sabaya", aliases: "sabaya صبایا", sizes: { "50ML": 2000, "30ML": 1300, "15ML": 750, "10ML": 550, "5ML": 280 } },
+                { id: "p17", name: "Oud Mood", aliases: "oud mood عود موڈ", sizes: { "50ML": 2200, "30ML": 1400, "15ML": 800, "10ML": 580, "5ML": 300 } },
+                { id: "p18", name: "Azzaro Wanted", aliases: "azzaro wanted ہزاروں وانٹڈ", sizes: { "50ML": 2200, "30ML": 1400, "15ML": 800, "10ML": 580, "5ML": 300 } },
+                { id: "p19", name: "Hugo Boss", aliases: "hugo boss ہوگو باس", sizes: { "50ML": 2500, "30ML": 1600, "15ML": 900, "10ML": 650, "5ML": 350 } },
+                { id: "p20", name: "Red Silk", aliases: "red silk ریڈ سلک", sizes: { "50ML": 2500, "30ML": 1600, "15ML": 900, "10ML": 650, "5ML": 350 } }
+            ],
+            Attar: [
+                { id: "a1", name: "Rasha", aliases: "rasha راشا", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a2", name: "Dirham", aliases: "dirham درہم", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a3", name: "9 PM", aliases: "9 pm نائن پی ایم", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a4", name: "Khamrah Lattafa", aliases: "khamrah lattafa خمرہ لطافہ", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a5", name: "Soft", aliases: "soft سوفٹ", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a6", name: "Kulsoom", aliases: "kulsoom کلثوم", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a7", name: "Royal Marriage", aliases: "royal marriage رائل میرج", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a8", name: "India Darbar", aliases: "india darbar انڈیا دربار", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a9", name: "Attar Henna", aliases: "attar henna عطر حنا", sizes: { "3ML": 500, "6ML": 1000, "12ML": 1500 } },
+                { id: "a10", name: "Imperial Valley", aliases: "imperial valley امپیریل ویلی", sizes: { "3ML": 600, "6ML": 1200, "12ML": 2400 } },
+                { id: "a11", name: "Merge Imperial Valley", aliases: "merge imperial valley مرج امپیریل ویلی", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a12", name: "Blue Sea", aliases: "blue sea بلیو سی", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a13", name: "Azzaro Wanted", aliases: "azzaro wanted ہزاروں وانٹڈ", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a14", name: "Sultan", aliases: "sultan سلطان", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a15", name: "Farishta", aliases: "farishta فرشتہ", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a16", name: "Baccarat", aliases: "baccarat بکرات", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a17", name: "Dinner Desire", aliases: "dinner desire ڈینر ڈیزائر", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a18", name: "Bukhoor Arab", aliases: "bukhoor arab بخور عرب", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a19", name: "Majmua", aliases: "majmua مجموعہ", sizes: { "3ML": 400, "6ML": 800, "12ML": 1600 } },
+                { id: "a20", name: "Ameer Al Oud", aliases: "ameer al oud امیر العود", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a21", name: "Oud Al Layl", aliases: "oud al layl عود اللیل", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a22", name: "White Oud", aliases: "white oud وائٹ عود", sizes: { "3ML": 400, "6ML": 800, "12ML": 1600 } },
+                { id: "a23", name: "Janaan Sport", aliases: "janaan sport جنان اسپورٹس", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a24", name: "Darbar", aliases: "darbar دربار", sizes: { "3ML": 500, "6ML": 1000, "12ML": 1500 } },
+                { id: "a25", name: "Afshan", aliases: "afshan افشاں", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a26", name: "Musk", aliases: "musk مشک", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a27", name: "Gul Leila", aliases: "gul leila گل لیلہ", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a28", name: "Shamsa Dubai", aliases: "shamsa dubai شمسہ دبئی", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a29", name: "Laksh", aliases: "laksh لکش", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a30", name: "Romantic Coffee", aliases: "romantic coffee رومانٹک کافی", sizes: { "3ML": 600, "6ML": 1200, "12ML": 2400 } },
+                { id: "a31", name: "Red Tiger", aliases: "red tiger ریڈ ٹائیگر", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a32", name: "Chanel", aliases: "chanel چینل", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a33", name: "Zamzam", aliases: "zamzam زمزم", sizes: { "3ML": 400, "6ML": 800, "12ML": 1600 } },
+                { id: "a34", name: "Tea Rose", aliases: "tea rose ٹی روز", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a35", name: "Sabaya", aliases: "sabaya صبایا", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a36", name: "Hugo Boss", aliases: "hugo boss ہوگو باس", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a37", name: "Eternity", aliases: "eternity انٹرنیٹی", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a38", name: "Delicia", aliases: "delicia ڈیلیشیا", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a39", name: "Open", aliases: "open اوپن", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a40", name: "Fowakeh", aliases: "fowakeh فواکہ", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a41", name: "Creed", aliases: "creed کریکی", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a42", name: "Musk Al Hind", aliases: "musk al hind مسک الہند", sizes: { "3ML": 350, "6ML": 700, "12ML": 1400 } },
+                { id: "a43", name: "White Musk", aliases: "white musk وائٹ مسک", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a44", name: "Shada", aliases: "shada شادہ", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a45", name: "Fadai", aliases: "fadai فدائی", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a46", name: "Mashooqa", aliases: "mashooqa معشوقہ", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a47", name: "Taiba", aliases: "taiba طیبہ", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a48", name: "Hayavak", aliases: "hayavak ہیواک", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a49", name: "Poison", aliases: "poison پوائزن", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a50", name: "Harare", aliases: "harare ہرارے", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a51", name: "Office For Men", aliases: "office for men آفس فار مین", sizes: { "3ML": 350, "6ML": 700, "12ML": 1400 } },
+                { id: "a52", name: "Aseel", aliases: "aseel اصیل", sizes: { "3ML": 400, "6ML": 800, "12ML": 1600 } },
+                { id: "a53", name: "Dubai Aseel", aliases: "dubai aseel دبئی اصیل", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a54", name: "Chambeli", aliases: "chambeli چمبیلی", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a55", name: "Raat Ki Rani", aliases: "raat ki rani رات کی رانی", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a56", name: "Turki Gulab", aliases: "turki gulab ترکی گلاب", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a57", name: "Musk Silk", aliases: "musk silk مسک سلک", sizes: { "3ML": 600, "6ML": 1200, "12ML": 2400 } },
+                { id: "a58", name: "9 PM Rebel", aliases: "9 pm rebel نائن پی ایم ریبل", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a59", name: "Khamrah Qahwa", aliases: "khamrah qahwa خمرہ قہوہ", sizes: { "3ML": 300, "6ML": 600, "12ML": 1200 } },
+                { id: "a60", name: "Shamama Al Amber", aliases: "shamama al amber شمامة العنبر", sizes: { "3ML": 650, "6ML": 1250, "12ML": 2500 } },
+                { id: "a61", name: "Rooh Al Khas", aliases: "rooh al khas روح الخس", sizes: { "3ML": 3500, "6ML": 7000, "12ML": 14000 } }
+            ]
+        };
+
+        // Application State
+        let activeCategory = 'Perfumes';
+        let activeProductId = null;
+        let cardSelections = {}; // { productId: { size: '...', qty: 1 } }
+        let orderCart = [];
+        let savedScrollPosition = 0;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const now = new Date();
+            document.getElementById('headerDate').innerText = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            document.getElementById('homePerfumeCount').innerText = `${PRODUCTS_DATA.Perfumes.length} Products`;
+            document.getElementById('homeAttarCount').innerText = `${PRODUCTS_DATA.Attar.length} Products`;
+            updateTotals();
+        });
+
+        // Navigation Functions
+        function goHome() {
+            document.getElementById('catalogView').style.display = 'none';
+            document.getElementById('homeCategoryView').style.display = 'block';
+            document.getElementById('homeQuickSearch').value = '';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openCategory(category, initialSearch = '') {
+            activeCategory = category;
+            document.getElementById('homeCategoryView').style.display = 'none';
+            document.getElementById('catalogView').style.display = 'block';
+
+            // Update switcher buttons
+            const btnP = document.getElementById('switchBtnPerfumes');
+            const btnA = document.getElementById('switchBtnAttar');
+            if (category === 'Perfumes') {
+                btnP.style.background = 'var(--gold-main)';
+                btnP.style.color = '#fff';
+                btnA.style.background = '#fff';
+                btnA.style.color = '#18181b';
+            } else {
+                btnA.style.background = 'var(--gold-main)';
+                btnA.style.color = '#fff';
+                btnP.style.background = '#fff';
+                btnP.style.color = '#18181b';
+            }
+
+            document.getElementById('catalogSearchInput').value = initialSearch;
+            renderCatalog();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function handleHomeSearch() {
+            const val = document.getElementById('homeQuickSearch').value.trim();
+            if (val.length > 0) {
+                // Check if match is in Perfumes or Attar first
+                const inPerfumes = PRODUCTS_DATA.Perfumes.some(p => p.name.toLowerCase().includes(val.toLowerCase()) || p.aliases.toLowerCase().includes(val.toLowerCase()));
+                openCategory(inPerfumes ? 'Perfumes' : 'Attar', val);
+                document.getElementById('catalogSearchInput').focus();
+            }
+        }
+
+        function clearCatalogSearch() {
+            document.getElementById('catalogSearchInput').value = '';
+            renderCatalog();
+        }
+
+        // Render Product Catalog (Natural Flow, No Nested Scroll Box)
+        function renderCatalog() {
+            const container = document.getElementById('catalogListContainer');
+            const query = document.getElementById('catalogSearchInput').value.trim().toLowerCase();
+            let list = PRODUCTS_DATA[activeCategory];
+
+            if (query) {
+                list = list.filter(item =>
+                    item.name.toLowerCase().includes(query) ||
+                    (item.aliases && item.aliases.toLowerCase().includes(query))
+                );
+            }
+
+            document.getElementById('catalogCountBadge').innerText = `${list.length} Products`;
+            container.innerHTML = '';
+
+            if (list.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-white border rounded-4 p-5 text-center text-muted">
+                        <i class="bi bi-search fs-2 d-block mb-2"></i>
+                        No fragrances matched your search.
+                    </div>
+                `;
+                return;
+            }
+
+            list.forEach(product => {
+                const sizes = Object.keys(product.sizes);
+                if (!cardSelections[product.id]) {
+                    cardSelections[product.id] = { size: sizes[0], qty: 1 };
+                }
+
+                const state = cardSelections[product.id];
+                const currentRate = product.sizes[state.size];
+                const isHighlighted = activeProductId === product.id ? 'selected-card' : '';
+
+                let sizeButtonsHTML = '';
+                sizes.forEach(sz => {
+                    const activeCls = state.size === sz ? 'active' : '';
+                    sizeButtonsHTML += `<button type="button" class="ml-btn ${activeCls}" onclick="selectProductSize('${product.id}', '${sz}', event)">${sz}</button>`;
+                });
+
+                const card = document.createElement('div');
+                card.className = `catalog-card ${isHighlighted}`;
+                card.onclick = () => highlightProductCard(product.id);
+                card.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-center gap-2 mb-2.5">
+                        <div>
+                            <h3 class="h6 fw-bold mb-0 text-dark" style="font-size: 1rem;">${product.name}</h3>
+                            <span class="text-muted" style="font-size: 0.72rem;">${activeCategory}</span>
+                        </div>
+                        <div class="price-tag">Rs. ${currentRate.toLocaleString()}</div>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        ${sizeButtonsHTML}
+                    </div>
+
+                    <div class="d-flex align-items-center justify-content-between gap-2 pt-2.5 border-top">
+                        <div class="qty-box" onclick="event.stopPropagation()">
+                            <button type="button" class="qty-btn" onclick="changeCardQty('${product.id}', -1)">−</button>
+                            <span class="qty-val">${state.qty}</span>
+                            <button type="button" class="qty-btn" onclick="changeCardQty('${product.id}', 1)">+</button>
+                        </div>
+
+                        <button type="button" class="btn-gold-primary flex-grow-1 d-flex align-items-center justify-content-center gap-2" onclick="addProductToOrder('${product.id}', event)">
+                            <i class="bi bi-bag-plus-fill"></i>
+                            <span>ADD TO ORDER</span>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function highlightProductCard(productId) {
+            if (activeProductId !== productId) {
+                activeProductId = productId;
+                renderCatalog();
+            }
+        }
+
+        function selectProductSize(productId, size, event) {
+            if (event) event.stopPropagation();
+            activeProductId = productId;
+            if (!cardSelections[productId]) {
+                cardSelections[productId] = { size: size, qty: 1 };
+            } else {
+                cardSelections[productId].size = size;
+            }
+            renderCatalog();
+        }
+
+        function changeCardQty(productId, delta) {
+            activeProductId = productId;
+            if (!cardSelections[productId]) {
+                const prod = PRODUCTS_DATA[activeCategory].find(p => p.id === productId);
+                cardSelections[productId] = { size: Object.keys(prod.sizes)[0], qty: 1 };
+            }
+            cardSelections[productId].qty = Math.max(1, cardSelections[productId].qty + delta);
+            renderCatalog();
+        }
+
+        // Add to Order Cart
+        function addProductToOrder(productId, event) {
+            if (event) event.stopPropagation();
+            activeProductId = productId;
+            const product = PRODUCTS_DATA[activeCategory].find(p => p.id === productId);
+            const state = cardSelections[productId] || { size: Object.keys(product.sizes)[0], qty: 1 };
+            const rate = product.sizes[state.size];
+
+            const existing = orderCart.find(item =>
+                item.id === product.id &&
+                item.category === activeCategory &&
+                item.size === state.size
+            );
+
+            if (existing) {
+                existing.qty += state.qty;
+            } else {
+                orderCart.push({
+                    uid: Date.now() + Math.random(),
+                    id: product.id,
+                    name: product.name,
+                    category: activeCategory,
+                    sizes: product.sizes,
+                    size: state.size,
+                    rate: rate,
+                    qty: state.qty
+                });
+            }
+
+            // Reset card qty to 1 after adding
+            cardSelections[productId].qty = 1;
+            renderCatalog();
+            renderOrderCart();
+        }
+
+        // Mobile Full-Screen Cart Drawer Controls
+        function openMobileCart() {
+            savedScrollPosition = window.scrollY;
+            document.body.classList.add('cart-drawer-open');
+            document.getElementById('orderPanelWrapper').classList.add('open');
+        }
+
+        function closeMobileCart() {
+            document.getElementById('orderPanelWrapper').classList.remove('open');
+            document.body.classList.remove('cart-drawer-open');
+            window.scrollTo(0, savedScrollPosition);
+        }
+
+        // Order Cart Manipulation
+        function changeOrderItemSize(uid, newSize) {
+            const item = orderCart.find(i => i.uid === uid);
+            if (item) {
+                item.size = newSize;
+                item.rate = item.sizes[newSize];
+                renderOrderCart();
+            }
+        }
+
+        function changeOrderItemQty(uid, delta) {
+            const item = orderCart.find(i => i.uid === uid);
+            if (item) {
+                item.qty += delta;
+                if (item.qty < 1) {
+                    orderCart = orderCart.filter(i => i.uid !== uid);
+                }
+                renderOrderCart();
+            }
+        }
+
+        function removeOrderItem(uid) {
+            orderCart = orderCart.filter(i => i.uid !== uid);
+            renderOrderCart();
+        }
+
+        function clearOrder() {
+            orderCart = [];
+            renderOrderCart();
+        }
+
+        function renderOrderCart() {
+            const container = document.getElementById('orderItemsList');
+            container.innerHTML = '';
+
+            if (orderCart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center text-muted py-4 border rounded-3 bg-light">
+                        <i class="bi bi-bag fs-3 d-block mb-1 text-secondary"></i>
+                        <span class="small">Your order is empty. Select a product & ML size to add.</span>
+                    </div>
+                `;
+                updateTotals();
+                return;
+            }
+
+            orderCart.forEach(item => {
+                const itemTotal = item.rate * item.qty;
+                let sizeChips = '';
+                Object.keys(item.sizes).forEach(sz => {
+                    const activeCls = item.size === sz ? 'active' : '';
+                    sizeChips += `<button type="button" class="ml-btn py-1 px-2 ${activeCls}" style="font-size: 0.72rem; min-width: 44px;" onclick="changeOrderItemSize(${item.uid}, '${sz}')">${sz}</button>`;
+                });
+
+                const card = document.createElement('div');
+                card.className = 'order-item-card';
+                card.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                        <div>
+                            <div class="fw-bold text-dark" style="font-size: 0.92rem;">${item.name}</div>
+                            <span class="badge bg-light text-muted border" style="font-size: 0.68rem;">${item.category}</span>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-danger border-0 py-0 px-1.5" onclick="removeOrderItem(${item.uid})" title="Remove Item">
+                            <i class="bi bi-trash3-fill"></i>
+                        </button>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-1.5 mb-2.5">
+                        ${sizeChips}
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+                        <div class="qty-box">
+                            <button type="button" class="qty-btn" style="width: 30px; height: 30px;" onclick="changeOrderItemQty(${item.uid}, -1)">−</button>
+                            <span class="qty-val" style="min-width: 28px; font-size: 0.85rem;">${item.qty}</span>
+                            <button type="button" class="qty-btn" style="width: 30px; height: 30px;" onclick="changeOrderItemQty(${item.uid}, 1)">+</button>
+                        </div>
+
+                        <div class="text-end">
+                            <div class="text-muted" style="font-size: 0.72rem;">Rs. ${item.rate.toLocaleString()} × ${item.qty}</div>
+                            <div class="fw-extrabold text-dark" style="font-size: 0.92rem;">Rs. ${itemTotal.toLocaleString()}</div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            updateTotals();
+        }
+
+        function updateTotals() {
+            let subtotal = 0;
+            let totalQty = 0;
+
+            orderCart.forEach(item => {
+                subtotal += item.rate * item.qty;
+                totalQty += item.qty;
+            });
+
+            const delivery = parseFloat(document.getElementById('deliveryInput').value) || 0;
+            const grandTotal = subtotal + delivery;
+
+            document.getElementById('billSubtotal').innerText = `Rs. ${subtotal.toLocaleString()}`;
+            document.getElementById('billGrandTotal').innerText = `Rs. ${grandTotal.toLocaleString()}`;
+            document.getElementById('orderTotalItemsTop').innerText = totalQty;
+
+            // Update Mobile Sticky Cart Bar
+            document.getElementById('stickyCountBadge').innerText = totalQty;
+            document.getElementById('stickyItemsText').innerText = `${totalQty} ${totalQty === 1 ? 'ITEM' : 'ITEMS'}`;
+            document.getElementById('stickyTotalText').innerText = `Rs. ${grandTotal.toLocaleString()}`;
+
+            return { subtotal, delivery, grandTotal };
+        }
+
+        // Invoice Modal Generator
+        function openInvoiceModal() {
+            if (orderCart.length === 0) {
+                alert("Please add at least one product to your order first.");
+                return;
+            }
+
+            const custName = document.getElementById('custName').value.trim() || "Valued Customer";
+            const custPhone = document.getElementById('custPhone').value.trim() || "03XXXXXXXXX";
+            const custCity = document.getElementById('custCity').value.trim() || "Karachi";
+            const custArea = document.getElementById('custArea').value.trim() || "Main City";
+            const custAddress = document.getElementById('custAddress').value.trim() || "Standard Delivery Address";
+
+            document.getElementById('invCustName').innerText = custName;
+            document.getElementById('invCustPhone').innerText = custPhone;
+            document.getElementById('invCustCityArea').innerText = `${custCity} (${custArea})`;
+            document.getElementById('invCustAddress').innerText = custAddress;
+            document.getElementById('invDateTime').innerText = new Date().toLocaleString();
+            document.getElementById('invNumber').innerText = `SC-2026-${Math.floor(1000 + Math.random() * 9000)}`;
+
+            const tbody = document.getElementById('invItemsBody');
+            tbody.innerHTML = '';
+
+            orderCart.forEach((item, idx) => {
+                const rowTotal = item.rate * item.qty;
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${idx + 1}</td>
+                    <td class="fw-bold">${item.name}</td>
+                    <td>${item.category}</td>
+                    <td>${item.size}</td>
+                    <td class="text-center">${item.qty}</td>
+                    <td class="text-end">Rs. ${item.rate.toLocaleString()}</td>
+                    <td class="text-end fw-bold">Rs. ${rowTotal.toLocaleString()}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            const totals = updateTotals();
+            document.getElementById('invSubtotal').innerText = `Rs. ${totals.subtotal.toLocaleString()}`;
+            document.getElementById('invDelivery').innerText = `Rs. ${totals.delivery.toLocaleString()}`;
+            document.getElementById('invGrandTotal').innerText = `Rs. ${totals.grandTotal.toLocaleString()}`;
+
+            const modal = new bootstrap.Modal(document.getElementById('invoiceModal'));
+            modal.show();
+        }
+    </script>
+</body>
+</html>
